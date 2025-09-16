@@ -1,4 +1,4 @@
-% to produce all Figures other than Figure 9 in the paper
+% to produce all Figures other than Figure 12 in the paper
 names = ["G","G_S","G_I","G_Si","I","I_S","I_a","I_i","M_S","Ca_si","K_Si","Na_Si","V","A","sixCP"];
 numbers = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15];
 dic = dictionary(names,numbers);
@@ -65,6 +65,15 @@ X2_2(1,3) = initial_glucose;
 
 X2_3(1,3) = initial_glucose;
 
+% sensitivity to initial meal size (vary G_I)
+% Reuse X2_3 (T1D with tiny implant) but change the initial stomach glucose (G_I)
+X2_3_45 = X2_3;  X2_3_45(1,3) = 45;     % smaller meal
+X2_3_85 = X2_3;  X2_3_85(1,3) = 85;     % larger meal
+% Run the PID-regulated system at the same density and gains as y3_4
+[t10_45, y10_45] = ode23(@(t,y) PID_model(t,y,0.001,0.9137,0.7047, 14, 11, 6, 3.2, 5*10^11), tspan3, [X2_3_45,0], options);
+[t10_85, y10_85] = ode23(@(t,y) PID_model(t,y,0.001,0.9137,0.7047, 14, 11, 6, 3.2, 5*10^11), tspan3, [X2_3_85,0], options);
+
+
 X2_4(1,3) = initial_glucose;
 
 
@@ -79,6 +88,8 @@ X2_4(1,3) = initial_glucose;
 
 %simulation4: T1D mice with high density PID beta cell treatment(use X2_3 for initial values)
 [t, y3_4] = ode23(@(t,y) PID_model(t,y,0.001,0.9137,0.7047, 14, 11, 6, 3.2, 5*10^11), tspan3, [X2_3,0], options);
+t3_4 = t;
+
 
 %simulation5: T1D mice with density of 1.17*10^7 for beta cell treatment(use X2_4 for initial values)
 [t, low_density] = ode23(@(t,y) vivo_model(t,y,0.001,0.9137,0.7047,1.17*10^7), tspan3, X2_4); 
@@ -265,6 +276,18 @@ plot(t,y3_3(:,dic("M_S")),'Color','b','LineStyle',':',LineWidth=2);
 xlabel('Time (minutes)');
 ylabel('Cell mRNA concentration (mM)');
 legend({"T1D P","T1D A"});
+hold off
+
+
+% For figure with sensitivity to initial meal size (vary G_I)
+figure
+hold on
+plot(t3_4,  y3_4(:,dic("G")),  'Color','m','LineWidth',2);          % baseline (initial G_I = 63.16)
+plot(t10_45, y10_45(:,dic("G")),'Color','m','LineWidth',2,'LineStyle','-.'); % 45
+plot(t10_85, y10_85(:,dic("G")),'Color','m','LineWidth',2,'LineStyle',':');  % 85
+legend({'Initial glucose = 63.16','Initial glucose = 45','Initial glucose = 85'});
+xlabel('Time (minutes)');
+ylabel('Glycemia (mM)');
 hold off
 
 
