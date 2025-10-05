@@ -99,8 +99,8 @@ t3_4 = t;
 [t, y3_6] = ode23(@(t,y) PID_model(t,y,0.001,0.9137,0.7047, 14, 11, 6, 3.21, 5*10^11), tspan3, [X2_3,0], options);
 
 %use different PID gain parameters
-[t, y3_7] = ode23(@(t,y) PID_model(t,y,0.001,0.9137,0.7047, 15, 12, 7, 3.2, 5*10^11), tspan3, [X2_3,0], options);
-[t, y3_8] = ode23(@(t,y) PID_model(t,y,0.001,0.9137,0.7047, 13, 10, 5, 3.2, 5*10^11), tspan3, [X2_3,0], options);
+[t, y3_7] = ode23(@(t,y) PID_model(t,y,0.001,0.9137,0.7047, 16, 13, 8, 3.2, 5*10^11), tspan3, [X2_3,0], options);
+[t, y3_8] = ode23(@(t,y) PID_model(t,y,0.001,0.9137,0.7047, 12, 9, 4, 3.2, 5*10^11), tspan3, [X2_3,0], options);
 
 
 %% result plotting
@@ -207,7 +207,7 @@ hold on
 plot(t, y3_4(:,dic("G")),'Color','m',LineWidth=2);
 plot(t, y3_7(:,dic("G")),'Color','m',LineWidth=2,LineStyle=':');
 plot(t, y3_8(:,dic("G")),'Color','m',LineWidth=2,LineStyle='-.');
-legend({"P gain = 14, I gain = 11, D gain = 6","P gain = 15, I gain = 12, D gain = 7","P gain = 13, I gain = 10, D gain = 5"});
+legend({"P gain = 14, I gain = 11, D gain = 6","P gain = 16, I gain = 13, D gain = 8","P gain = 12, I gain = 9, D gain = 4"});
 xlabel('Time (minutes)');
 ylabel('Glycemia (mM)');
 hold off
